@@ -47,12 +47,63 @@ var carList = new CarList(currentCars)
 
 // single car view
 var CarView = Backbone.View.extend({
+  events: {
+    'click .edit-car': 'editCar',
+    'click .save-edit': 'updateCar',
+    'click .cancel-edit': 'cancel',
+    'click .delete-car': 'deleteCar'
+  },
   model: new Car(),
   tagName: 'tr',
-  template: _.template('<td><%= serial%></td>' + '<td><%= brand%></td>' + '<td><%= model%></td>' + '<td><%= year%></td>' + '<td><button class="btn btn-default">Edit</button> <button class="btn btn-default">Delete</button></td>'),
+  template: _.template(
+    '<td><span class="serial"><%= serial%></span></td>' +
+    '<td><span class="brand"><%= brand%></span></td>' +
+    '<td><span class="model"><%= model%></span></td>' +
+    '<td><span class="year"><%= year%></span></td>' +
+    '<td><button class="btn btn-default edit-car">Edit</button>' +
+    '<button class="btn btn-default save-edit" style="display:none">Save</button>' +
+    '<button class="btn btn-default cancel-edit" style="display:none">Cancel</button>' +
+    '<button class="btn btn-default delete-car">Delete</button></td>'
+    ),
   render: function () {
     this.$el.html(this.template(this.model.toJSON()))
     return this
+  },
+
+  editCar: function () {
+    this.$('.edit-car').hide()
+    this.$('.delete-car').hide()
+    this.$('.save-edit').show()
+    this.$('.cancel-edit').show()
+
+    this.$('.brand').html('<input type="text" class="form-control brand-update" value="' + this.model.get('brand') + '">')
+    this.$('.model').html('<input type="text" class="form-control model-update" value="' + this.model.get('model') + '">')
+    this.$('.year').html('<input type="text" class="form-control year-update" value="' + this.model.get('year') + '">')
+  },
+
+  updateCar: function () {
+    this.model.set({
+      brand: $('.brand-update').val(),
+      model: $('.model-update').val(),
+      year: $('.year-update').val()
+    })
+    this.$('.edit-car').show()
+    this.$('.delete-car').show()
+    this.$('.cancel-edit').hide()
+    this.$('.save-edit').hide()
+
+    this.$('.brand').html($('<td><span class="brand">' + this.model.get('brand') + '</span></td>'))
+    this.$('.model').html($('<td><span class="brand">' + this.model.get('model') + '</span></td>'))
+    this.$('.year').html($('<td><span class="brand">' + this.model.get('year') + '</span></td>'))
+  },
+
+  cancel: function () {
+    this.render()
+  },
+
+  deleteCar: function () {
+    this.model.destroy()
+    this.remove()
   }
 })
 
@@ -94,6 +145,7 @@ var CarListView = Backbone.View.extend({
     var carView = new CarView({model: car})
     $('.cars-list').append(carView.render().el)
   }
+
 })
 var carListView = new CarListView({collection: carList})
 
