@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <title>Cars Backbone</title>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/backbone/backbone.js"></script>
+    <script src="core.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cars</h1>
+      <table class="table">
+        <thead class="row">
+          <th class="col-md-1">Serial</th>
+          <th class="col-md-3">Brand</th>
+          <th class="col-md-3">Model</th>
+          <th class="col-md-3">Year of Manufacture</th>
+          <th class="col-md-2">Actions</th>
+        </thead>
+        <tbody class="cars-list">
+          <tr>
+            <td></td>
+            <td><input type="text" class="form-control"></td>
+            <td><input type="text" class="form-control"></td>
+            <td><input type="text" class="form-control"></td>
+            <td><button class="btn btn-default new-car">Create</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
