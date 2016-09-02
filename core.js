@@ -1,4 +1,9 @@
 /* globals Backbone _ $*/
+
+// used to generate fake serial numbers
+var serialNo = 5
+
+// backbone Model
 var Car = Backbone.Model.extend({
   defaults: {
     brand: '',
@@ -35,9 +40,12 @@ var car4 = new Car({
   year: '2016'
 })
 
+// collection declaration
 var currentCars = [car1, car2, car3, car4]
+var CarList = Backbone.Collection.extend({model: Car})
+var carList = new CarList(currentCars)
 
-// single view
+// single car view
 var CarView = Backbone.View.extend({
   model: new Car(),
   tagName: 'tr',
@@ -48,12 +56,36 @@ var CarView = Backbone.View.extend({
   }
 })
 
-// collection & collection view
-var CarList = Backbone.Collection.extend({model: Car})
-var carList = new CarList()
-carList.add(currentCars)
+// new car form
+var NewCarForm = Backbone.View.extend({
+  events: {
+    'click .new-car': 'makeCar'
+  },
+  tagName: 'tr',
+  template: _.template('<td></td>' + '<td><input type="text" class="form-control brand"></td>' + '<td><input type="text" class="form-control model"></td>' + '<td><input type="text" class="form-control year"></td>' + '<td><button class="btn btn-default new-car">Create</button></td>'),
+  render: function () {
+    this.$el.html(this.template)
+    return this
+  },
+  makeCar: function () {
+    var newCar = {
+      serial: serialNo++,
+      brand: $('.brand').val(),
+      model: $('.model').val(),
+      year: $('.year').val()
+    }
+    carList.add(newCar)
+  }
+})
 
+var newCarForm = new NewCarForm()
+
+// all car view
 var CarListView = Backbone.View.extend({
+  model: carList,
+  initialize: function () {
+    this.model.on('add', this.addOne, this)
+  },
   render: function () {
     this.collection.forEach(this.addOne, this)
     return this
@@ -66,5 +98,6 @@ var CarListView = Backbone.View.extend({
 var carListView = new CarListView({collection: carList})
 
 $(function () {
+  $('.cars-list').append(newCarForm.render().el)
   carListView.render()
 })
