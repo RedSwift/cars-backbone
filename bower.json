@@ -1,0 +1,21 @@
+{
+  "name": "cars-backbone",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "Dominic <jxdlam@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/RedSwift/cars-backbone",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7"
+  }
+}
